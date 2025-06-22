@@ -1,0 +1,92 @@
+{
+  "name": "sts-ai-website",
+  "version": "1.0.0",
+  "description": "Si Tu Supieras El Poder de la IA - Plataforma educativa con sistema de monitoreo avanzado",
+  "private": true,
+  "author": "Si Tu Supieras El Poder de la IA",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tu-usuario/sts-ai-website.git"
+  },
+  "keywords": [
+    "nextjs",
+    "react",
+    "typescript",
+    "tailwindcss",
+    "ai",
+    "monitoring",
+    "vps",
+    "optimization"
+  ],
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "build:optimized": "NODE_OPTIONS='--max-old-space-size=512' next build",
+    "start": "next start -p 3000",
+    "start:optimized": "NODE_OPTIONS='--max-old-space-size=512' next start -p 3000",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "analyze": "ANALYZE=true next build",
+    "clean": "rm -rf .next out",
+    "clean:all": "rm -rf .next out node_modules/.cache",
+    "monitor": "node scripts/daily-monitoring.js",
+    "deploy:vps": "./scripts/deploy-vps.sh",
+    "optimize": "./scripts/optimize-vps.sh",
+    "setup:cron": "./scripts/setup-cron.sh",
+    "test:monitoring": "./scripts/test-monitoring.sh",
+    "monitor:resources": "./scripts/monitor-resources.sh",
+    "cleanup": "./scripts/cleanup.sh",
+    "maintenance": "./scripts/maintenance.sh"
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.7.0",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.0",
+    "axios": "^1.6.0",
+    "clsx": "^2.0.0",
+    "framer-motion": "^10.16.0",
+    "lucide-react": "^0.292.0",
+    "next": "^14.0.0",
+    "next-seo": "^6.4.0",
+    "next-themes": "^0.2.1",
+    "postcss": "^8.4.0",
+    "react": "^18.2.0",
+    "react-countup": "^6.4.0",
+    "react-dom": "^18.2.0",
+    "react-facebook-pixel": "^1.0.0",
+    "react-ga4": "^2.1.0",
+    "react-hook-form": "^7.47.0",
+    "react-hot-toast": "^2.4.0",
+    "react-intersection-observer": "^9.5.0",
+    "react-query": "^3.39.0",
+    "react-slick": "^0.29.0",
+    "react-visibility-sensor": "^5.1.1",
+    "slick-carousel": "^1.8.1",
+    "tailwind-merge": "^2.0.0",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^14.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0",
+    "prettier": "^3.0.0",
+    "prettier-plugin-tailwindcss": "^0.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "browserslist": [
+    ">0.3%",
+    "not dead",
+    "not op_mini all"
+  ]
+}

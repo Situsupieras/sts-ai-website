@@ -1,0 +1,62 @@
+# Dockerfile optimizado para VPS con 1GB RAM
+# Si Tu Supieras El Poder de la IA
+
+# Etapa de build optimizada
+FROM node:18-alpine AS builder
+
+# Configurar variables de entorno para optimización
+ENV NODE_OPTIONS="--max-old-space-size=512"
+ENV NEXT_TELEMETRY_DISABLED=1
+
+WORKDIR /app
+
+# Copiar archivos de dependencias
+COPY package*.json ./
+COPY tsconfig.json ./
+COPY next.config.js ./
+COPY tailwind.config.js ./
+COPY postcss.config.js ./
+
+# Instalar dependencias
+RUN npm ci --only=production && npm cache clean --force
+
+# Copiar código fuente
+COPY . .
+
+# Build optimizado
+RUN npm run build:optimized
+
+# Etapa de producción
+FROM node:18-alpine AS runner
+
+# Configurar variables de entorno
+ENV NODE_ENV=production
+ENV NODE_OPTIONS="--max-old-space-size=512"
+ENV NEXT_TELEMETRY_DISABLED=1
+
+WORKDIR /app
+
+# Crear usuario no-root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copiar archivos necesarios
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+# Crear directorio de datos
+RUN mkdir -p /app/data && chown -R nextjs:nodejs /app/data
+
+# Cambiar al usuario no-root
+USER nextjs
+
+# Exponer puerto
+EXPOSE 3000
+
+# Variables de entorno
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+# Comando de inicio
+CMD ["node", "server.js"] 

@@ -1,0 +1,125 @@
+===========================================
+COMANDOS PARA ARREGLAR EL VPS
+===========================================
+
+PASO 1: ACCEDER AL SERVIDOR
+===========================
+- Ve al panel de Alibaba Cloud
+- Busca "Console" o "Consola web"
+- O configura SSH: ssh root@stselpoderdelaia.online
+
+PASO 2: VERIFICAR ESTADO ACTUAL
+===============================
+docker ps -a
+systemctl status nginx
+netstat -tlnp | grep -E ':(80|443|3000)'
+ls -la /var/www/stselpoderdelaia.online
+
+PASO 3: INSTALAR DOCKER (si no está)
+====================================
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo systemctl start docker
+sudo systemctl enable docker
+docker --version
+
+PASO 4: INSTALAR DOCKER COMPOSE (si no está)
+============================================
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+
+PASO 5: INSTALAR NGINX (si no está)
+===================================
+sudo apt update
+sudo apt install -y nginx
+sudo systemctl start nginx
+sudo systemctl enable nginx
+
+PASO 6: PREPARAR DIRECTORIO DEL PROYECTO
+========================================
+sudo mkdir -p /var/www/stselpoderdelaia.online
+sudo chown -R $USER:$USER /var/www/stselpoderdelaia.online
+cd /var/www/stselpoderdelaia.online
+
+PASO 7: SUBIR ARCHIVOS (si no están)
+====================================
+# Opción A: Via consola web - sube el ZIP y extrae:
+unzip sts-ai-deployment-*.zip
+
+# Opción B: Via wget (si tienes URL):
+# wget https://tu-url.com/sts-ai-deployment.zip
+# unzip sts-ai-deployment.zip
+
+PASO 8: CONFIGURAR VARIABLES DE ENTORNO
+======================================
+cp .env.example .env
+nano .env
+# Edita las variables necesarias, especialmente:
+# - NEXT_PUBLIC_APP_URL=https://stselpoderdelaia.online
+# - WEBHOOK_URL=https://situsupieras.org/n8n/webhook/nuevo-lead-sts-ai
+
+PASO 9: CONFIGURAR NGINX
+========================
+sudo cp nginx-site.conf /etc/nginx/sites-available/stselpoderdelaia.online
+sudo ln -sf /etc/nginx/sites-available/stselpoderdelaia.online /etc/nginx/sites-enabled/
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t
+sudo systemctl restart nginx
+
+PASO 10: DESPLEGAR LA APLICACIÓN
+================================
+docker-compose down
+docker system prune -f
+docker-compose up -d --build
+
+PASO 11: VERIFICAR FUNCIONAMIENTO
+=================================
+docker ps
+curl http://localhost:3000
+curl http://stselpoderdelaia.online
+sudo systemctl status nginx
+
+PASO 12: CONFIGURAR FIREWALL
+============================
+sudo ufw allow 22
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw --force enable
+
+===========================================
+COMANDOS DE DIAGNÓSTICO
+===========================================
+
+VER LOGS DE DOCKER:
+docker-compose logs -f
+
+VER LOGS DE NGINX:
+sudo tail -f /var/log/nginx/error.log
+sudo tail -f /var/log/nginx/access.log
+
+VERIFICAR PUERTOS:
+sudo netstat -tlnp | grep -E ':(80|443|3000)'
+
+VERIFICAR FIREWALL:
+sudo ufw status
+
+VERIFICAR SERVICIOS:
+sudo systemctl status nginx
+sudo systemctl status docker
+
+===========================================
+SOLUCIÓN RÁPIDA (si ya tienes archivos)
+===========================================
+
+cd /var/www/stselpoderdelaia.online
+docker-compose down
+docker system prune -f
+docker-compose up -d --build
+sudo systemctl restart nginx
+docker ps
+curl http://localhost:3000
+
+===========================================
+URL FINAL: https://stselpoderdelaia.online
+=========================================== 

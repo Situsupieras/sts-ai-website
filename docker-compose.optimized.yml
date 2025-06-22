@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  sts-ai-website:
+    build:
+      context: .
+      dockerfile: Dockerfile.optimized
+    container_name: sts-ai-website
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NODE_OPTIONS=--max-old-space-size=512
+      - NEXT_TELEMETRY_DISABLED=1
+    volumes:
+      - ./data:/app/data
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - sts-ai-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: sts-ai-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-vps.conf:/etc/nginx/conf.d/default.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - sts-ai-website
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.25'
+        reservations:
+          memory: 64M
+          cpus: '0.1'
+    networks:
+      - sts-ai-network
+
+  monitoring:
+    image: node:18-alpine
+    container_name: sts-ai-monitoring
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./scripts:/app/scripts
+      - ./data:/app/data
+    command: >
+      sh -c "
+        echo 'Configurando monitoreo diario...' &&
+        chmod +x /app/scripts/daily-monitoring.js &&
+        echo '0 6 * * * cd /app && node scripts/daily-monitoring.js >> data/cron.log 2>&1' | crontab - &&
+        crond -f
+      "
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+          cpus: '0.1'
+        reservations:
+          memory: 32M
+          cpus: '0.05'
+    networks:
+      - sts-ai-network
+
+networks:
+  sts-ai-network:
+    driver: bridge 
