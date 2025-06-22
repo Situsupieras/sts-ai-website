@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { StatusPage } from '@/components/confianza/status-page'
 import { ComplianceSection } from '@/components/confianza/compliance-section'
 import { SecuritySection } from '@/components/confianza/security-section'
-import { TrustIndicators } from '@/components/confianza/trust-indicators'
+import TrustIndicators from '@/components/confianza/trust-indicators'
 
 export const metadata: Metadata = {
   title: 'Centro de Confianza | Si Tu Supieras El Poder de la IA',
