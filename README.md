@@ -253,3 +253,51 @@ tar -czf backup-$(date +%Y%m%d).tar.gz /var/www/stselpoderdelaia.online
 **URL Final**: https://stselpoderdelaia.online  
 **Estado**: ✅ **PRODUCCIÓN ACTIVA**  
 **Última Actualización**: Junio 2025 
+
+# 🚩 PROBLEMAS Y PENDIENTES (ESTADO AL 2024-07-21)
+
+## Linting (ESLint)
+Actualmente, el proyecto compila y funciona, pero quedan advertencias y algunos problemas menores de linting que deben ser atendidos para un código limpio y profesional. Aquí se documentan los principales:
+
+### 1. **Advertencias y Errores de Lint**
+
+#### **components/sections/roi-calculator.tsx**
+- [ ] Uso de `any` en varias interfaces y funciones (líneas ~36, 42, 340, 352, 374)
+- [ ] Uso de `console` (línea ~469)
+
+#### **app/api/contact/route.ts**
+- [ ] Múltiples `console.log` (líneas 7-12, 17-18, 95-96, 99-100, 139, 141, 146-147, 151, 156, 173-174, 179-182)
+
+#### **app/api/monitoring/route.ts**
+- [ ] Uso de `any` (líneas 114, 128)
+- [ ] Múltiples `console.log` (líneas 34, 120, 139, 157)
+
+#### **components/confianza/status-page.tsx**
+- [ ] Uso de `console` (línea 83)
+
+#### **components/providers/analytics-provider.tsx**
+- [ ] Uso de `any` (líneas 38, 39, 40)
+
+#### **components/sections/intelligent-form.tsx**
+- [ ] Falta dependencia en useEffect (línea 150)
+- [ ] Uso de `any` (línea 152)
+- [ ] Múltiples `console.log` (líneas 169-171, 184, 194-195, 199, 211, 215)
+
+### 2. **Errores de Compilación/Build**
+- No hay errores críticos de build actualmente, pero si se reactiva código comentado o se cambian dependencias, pueden aparecer advertencias relacionadas a los puntos anteriores.
+
+### 3. **404 de Recursos Estáticos**
+- Faltan archivos como `/site.webmanifest`, `/favicon-32x32.png`, `/favicon-16x16.png`. Crear estos archivos o agregar placeholders para evitar advertencias en consola y mejorar la experiencia de usuario.
+
+### 4. **API Monitoring**
+- El endpoint `/api/monitoring` puede mostrar advertencias en consola si no existen métricas reales en el VPS. Revisar la lógica de simulación si se despliega en producción real.
+
+---
+
+## 🛠️ **Siguiente Paso Sugerido**
+- Limpiar todos los `console.log` y reemplazar `any` por tipos específicos donde sea posible.
+- Agregar los recursos estáticos faltantes.
+- Revisar y mejorar la validación de formularios y dependencias de hooks.
+- Probar el sitio en modo producción (`npm run build && npm start`) para asegurar que no haya errores ocultos.
+
+--- 
