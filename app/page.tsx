@@ -3,6 +3,8 @@ import HeroSection from '@/components/sections/hero-section';
 import ProblemAgitationSolution from '@/components/sections/problem-agitation-solution';
 import SocialProof from '@/components/sections/social-proof';
 import AIProcessVisualizer from '@/components/sections/ai-process-visualizer';
+import FeaturesSection from '@/components/sections/features-section';
+import ROICalculator from '@/components/sections/roi-calculator';
 import IntelligentForm from '@/components/sections/intelligent-form';
 import CTASection from '@/components/sections/cta-section';
 
@@ -79,6 +81,16 @@ export default function HomePage() {
         <AIProcessVisualizer />
       </section>
 
+      {/* Features Section */}
+      <section id="features">
+        <FeaturesSection />
+      </section>
+
+      {/* ROI Calculator Section */}
+      <section id="calculadoras">
+        <ROICalculator />
+      </section>
+
       {/* CTA Section */}
       <section id="cta">
         <CTASection />
@@ -131,6 +143,11 @@ export default function HomePage() {
                 "@type": "Service",
                 "name": "Chatbots Inteligentes",
                 "description": "Chatbots avanzados para atención al cliente"
+              },
+              {
+                "@type": "Service",
+                "name": "Calculadoras de ROI",
+                "description": "Herramientas especializadas para calcular el retorno de inversión de IA"
               }
             ],
             "aggregateRating": {

@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const navigation = [
   { name: 'Soluciones', href: '/soluciones' },
   { name: 'Industrias', href: '/industrias' },
+  { name: 'Calculadoras ROI', href: '/calculadoras' },
   { name: 'Resultados', href: '/resultados' },
   { name: 'Metodología', href: '/metodologia' },
   { name: 'Recursos', href: '/recursos' },

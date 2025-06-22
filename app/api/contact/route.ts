@@ -17,10 +17,13 @@ export async function POST(request: NextRequest) {
     console.log('=== FORM DATA RECEIVED ===');
     console.log('Form submission received:', JSON.stringify(body, null, 2));
 
+    // Determinar el tipo de lead basado en el source
+    const isROICalculator = body.source === 'roi-calculator';
+    
     // Procesar los datos del formulario en fases
     const processedData = {
       // Información básica
-      name: `${body.firstName || ''} ${body.lastName || ''}`.trim(),
+      name: body.name || `${body.firstName || ''} ${body.lastName || ''}`.trim(),
       email: body.email || '',
       phone: body.phone || '',
       company: body.company || '',
@@ -48,11 +51,46 @@ export async function POST(request: NextRequest) {
       authority: body.authority || '',
       need: body.need || '',
       
+      // Datos específicos de ROI Calculator
+      roiCalculatorData: isROICalculator ? {
+        industry: body.industry || '',
+        calculatedROI: body.roi || 0,
+        formData: body.formData || {},
+        reportDownloaded: true,
+        calculatorUsed: true
+      } : null,
+      
       // Metadata
       submittedAt: body.submittedAt || new Date().toISOString(),
       source: body.source || 'landing-page',
       utmSource: body.utmSource || 'direct'
     };
+
+    // Calcular lead score específico para calculadoras de ROI
+    if (isROICalculator) {
+      let roiScore = 50; // Base score
+      
+      // Aumentar score basado en el ROI calculado
+      if (processedData.roiCalculatorData?.calculatedROI > 200) roiScore += 30;
+      else if (processedData.roiCalculatorData?.calculatedROI > 150) roiScore += 20;
+      else if (processedData.roiCalculatorData?.calculatedROI > 100) roiScore += 10;
+      
+      // Aumentar score basado en la industria
+      const highValueIndustries = ['manufacturing', 'healthcare', 'logistics'];
+      if (highValueIndustries.includes(processedData.roiCalculatorData?.industry)) {
+        roiScore += 15;
+      }
+      
+      // Aumentar score si descargó el reporte
+      if (processedData.roiCalculatorData?.reportDownloaded) {
+        roiScore += 10;
+      }
+      
+      processedData.leadScore = Math.min(roiScore, 100);
+      processedData.urgency = 'alta';
+      processedData.authority = 'media';
+      processedData.need = 'alta';
+    }
 
     console.log('=== PROCESSED DATA ===');
     console.log('Processed data:', JSON.stringify(processedData, null, 2));
@@ -86,8 +124,16 @@ export async function POST(request: NextRequest) {
       source: processedData.source,
       utmSource: processedData.utmSource,
       webhook_received_at: new Date().toISOString(),
-      form_source: 'sts-ai-landing-page'
+      form_source: isROICalculator ? 'sts-ai-roi-calculator' : 'sts-ai-landing-page'
     });
+
+    // Agregar datos específicos de ROI Calculator si aplica
+    if (isROICalculator && processedData.roiCalculatorData) {
+      params.append('roi_calculated', processedData.roiCalculatorData.calculatedROI.toString());
+      params.append('roi_industry', processedData.roiCalculatorData.industry);
+      params.append('report_downloaded', 'true');
+      params.append('calculator_used', 'true');
+    }
 
     const webhookUrl = `${WEBHOOK_URL}?${params.toString()}`;
     console.log('Full webhook URL:', webhookUrl);
@@ -112,13 +158,16 @@ export async function POST(request: NextRequest) {
     // Respuesta exitosa
     const response = {
       success: true,
-      message: '¡Gracias por tu interés! Te contactaremos pronto.',
+      message: isROICalculator 
+        ? '¡Gracias por usar nuestra calculadora! Tu reporte ha sido enviado y te contactaremos pronto.'
+        : '¡Gracias por tu interés! Te contactaremos pronto.',
       data: processedData,
       leadScore: processedData.leadScore,
       priority: processedData.leadScore >= 80 ? 'alta' : 
                 processedData.leadScore >= 60 ? 'media' : 'baja',
       webhook_sent: true,
-      webhook_status: webhookResponse.status
+      webhook_status: webhookResponse.status,
+      isROICalculator
     };
 
     console.log('=== SENDING RESPONSE TO CLIENT ===');
