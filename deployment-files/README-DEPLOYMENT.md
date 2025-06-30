@@ -64,3 +64,8 @@ El sitio estará disponible en: https://stselpoderdelaia.online
 - Si hay errores, verifica los logs: docker-compose logs -f
 - Si Nginx no funciona: sudo nginx -t para verificar configuración
 - Si el sitio no carga: verifica el firewall y puertos 80/443
+
+## Transparencia y Seguridad
+
+- Las métricas y testimonios en la web son aspiracionales y muestran el potencial de la IA, no resultados pasados ni promesas vacías.
+- El archivo `comandos-servidor.txt` contiene información interna y nunca debe subirse al repositorio git ni compartirse públicamente.

@@ -300,4 +300,17 @@ Actualmente, el proyecto compila y funciona, pero quedan advertencias y algunos 
 - Revisar y mejorar la validación de formularios y dependencias de hooks.
 - Probar el sitio en modo producción (`npm run build && npm start`) para asegurar que no haya errores ocultos.
 
---- 
+---
+
+## 🏆 CAMBIO DE FILOSOFÍA: TRANSPARENCIA Y HONESTIDAD
+
+A partir de junio 2024, la sección de Social Proof y métricas del sitio web ya no utiliza cifras inventadas ni testimonios ficticios. Ahora se comunica el potencial real de la IA y el acompañamiento experto, sin promesas vacías ni números no verificables. Los testimonios reales se publicarán cuando existan casos de éxito comprobables.
+
+- Las métricas ahora son aspiracionales y muestran el potencial de la IA para tu empresa.
+- No se muestran logos ni nombres de empresas ficticias.
+- El mensaje es honesto: estamos en fase de implementación con los primeros clientes.
+- Si ves referencias a "500+ empresas" o cifras similares, es información desactualizada.
+
+## ⚠️ NOTA DE SEGURIDAD
+
+El archivo `comandos-servidor.txt` contiene instrucciones y accesos internos para administración y nunca debe subirse al repositorio remoto ni compartirse públicamente. 
