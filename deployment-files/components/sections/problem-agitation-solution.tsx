@@ -161,15 +161,37 @@ export default function ProblemAgitationSolution() {
                 ¿Cuál es tu situación actual?
               </h3>
               <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                Descubre exactamente cuánto dinero estás perdiendo y cómo la IA puede recuperarlo en los próximos 6 meses
+                ¿Estás perdiendo tiempo, dinero y oportunidades?<br/>
+                Evalúa tu situación actual y descubre cómo la IA puede transformar tus operaciones en los próximos 6 meses.
               </p>
-              <a
-                href="#contact"
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200"
-              >
-                <CheckCircle className="w-5 h-5 mr-2" />
-                Calcular Mi ROI Personalizado
-              </a>
+              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 rounded">
+                <div className="font-semibold text-yellow-800 mb-2">🚨 Señales de alerta:</div>
+                <ul className="list-disc pl-5 text-yellow-900 space-y-1">
+                  <li>¿Tu equipo sigue haciendo tareas repetitivas que podrían automatizarse?</li>
+                  <li>¿Tomas decisiones importantes sin datos en tiempo real?</li>
+                  <li>¿Tus procesos operativos generan cuellos de botella o errores?</li>
+                  <li>¿Tus clientes tienen que esperar demasiado para recibir atención?</li>
+                </ul>
+              </div>
+              <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-4 rounded">
+                <div className="font-semibold text-blue-800 mb-2">🔍 Descubre el costo oculto:</div>
+                <p className="text-blue-900">Cada mes que pasa podrías estar perdiendo entre €10,000 y €50,000 en tiempo, recursos y decisiones ineficientes.</p>
+              </div>
+              <div className="bg-green-50 border-l-4 border-green-400 p-4 mb-4 rounded">
+                <div className="font-semibold text-green-800 mb-2">🤖 ¿Y si en solo 6 meses…?</div>
+                <ul className="list-disc pl-5 text-green-900 space-y-1">
+                  <li>Automatizas hasta un 70% de tareas repetitivas</li>
+                  <li>Ahorras miles de euros en costos operativos</li>
+                  <li>Tomas decisiones más precisas y rápidas</li>
+                  <li>Aumentas la satisfacción de clientes y empleados</li>
+                </ul>
+              </div>
+              <div className="text-center mt-6 mb-6">
+                <a href="#lead-form" className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200">
+                  <CheckCircle className="w-5 h-5 mr-2" />
+                  Calcula tu pérdida actual y descubre tu ROI potencial
+                </a>
+              </div>
             </div>
           </motion.div>
         </motion.div>

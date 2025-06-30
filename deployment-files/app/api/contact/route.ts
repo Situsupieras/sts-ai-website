@@ -51,7 +51,12 @@ export async function POST(request: NextRequest) {
       // Metadata
       submittedAt: body.submittedAt || new Date().toISOString(),
       source: body.source || 'landing-page',
-      utmSource: body.utmSource || 'direct'
+      utmSource: body.utmSource || 'direct',
+      
+      // Nuevo campo
+      repetitiveHours: body.repetitiveHours || '',
+      estimatedBilling: body.estimatedBilling || '',
+      mainPain: body.mainPain || '',
     };
 
     console.log('=== PROCESSED DATA ===');
@@ -85,6 +90,9 @@ export async function POST(request: NextRequest) {
       submittedAt: processedData.submittedAt,
       source: processedData.source,
       utmSource: processedData.utmSource,
+      repetitiveHours: processedData.repetitiveHours,
+      estimatedBilling: processedData.estimatedBilling,
+      mainPain: processedData.mainPain,
       webhook_received_at: new Date().toISOString(),
       form_source: 'sts-ai-landing-page'
     });

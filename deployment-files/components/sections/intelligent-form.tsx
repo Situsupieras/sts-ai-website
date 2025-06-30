@@ -43,6 +43,9 @@ export default function IntelligentForm() {
     companySize: '',
     annualRevenue: '',
     currentChallenges: [] as string[],
+    repetitiveHours: '',
+    estimatedBilling: '',
+    mainPain: '',
     
     // Objetivos y timeline
     primaryGoal: '',
@@ -71,7 +74,7 @@ export default function IntelligentForm() {
       id: 'business-info',
       title: 'Información del Negocio',
       description: 'Entendamos mejor tu empresa',
-      fields: ['companySize', 'annualRevenue', 'currentChallenges']
+      fields: ['companySize', 'annualRevenue', 'currentChallenges', 'repetitiveHours', 'estimatedBilling', 'mainPain']
     },
     {
       id: 'goals-timeline',
@@ -400,6 +403,54 @@ export default function IntelligentForm() {
                 </label>
               ))}
             </div>
+          </div>
+        );
+
+      case 'repetitiveHours':
+        return (
+          <div>
+            <label className="block text-white font-medium mb-2">Horas semanales en tareas repetitivas (aproximado):</label>
+            <input
+              type="number"
+              min="0"
+              placeholder="Ejemplo: 15, 30, 50..."
+              value={formData.repetitiveHours}
+              onChange={(e) => handleInputChange('repetitiveHours', e.target.value)}
+              className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
+            />
+          </div>
+        );
+
+      case 'estimatedBilling':
+        return (
+          <div>
+            <label className="block text-white font-medium mb-2">Facturación anual aproximada:</label>
+            <input
+              type="text"
+              placeholder="Ejemplo: €100,000, €1M, €5M"
+              value={formData.estimatedBilling}
+              onChange={(e) => handleInputChange('estimatedBilling', e.target.value)}
+              className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
+            />
+          </div>
+        );
+
+      case 'mainPain':
+        return (
+          <div>
+            <label className="block text-white font-medium mb-2">¿Cuál es tu mayor dolor empresarial hoy?</label>
+            <select
+              value={formData.mainPain}
+              onChange={(e) => handleInputChange('mainPain', e.target.value)}
+              className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="Procesos lentos o manuales">Procesos lentos o manuales</option>
+              <option value="Decisiones sin datos claros">Decisiones sin datos claros</option>
+              <option value="Costos operativos altos">Costos operativos altos</option>
+              <option value="Mala experiencia del cliente">Mala experiencia del cliente</option>
+              <option value="Otro">Otro (especificar)</option>
+            </select>
           </div>
         );
 

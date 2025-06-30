@@ -63,7 +63,10 @@ export async function POST(request: NextRequest) {
       // Metadata
       submittedAt: body.submittedAt || new Date().toISOString(),
       source: body.source || 'landing-page',
-      utmSource: body.utmSource || 'direct'
+      utmSource: body.utmSource || 'direct',
+      repetitiveHours: body.repetitiveHours || '',
+      estimatedBilling: body.estimatedBilling || '',
+      mainPain: body.mainPain || '',
     };
 
     // Calcular lead score específico para calculadoras de ROI
