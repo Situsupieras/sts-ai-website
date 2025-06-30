@@ -4,21 +4,11 @@ import { useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { 
-  User, 
-  Building, 
-  Mail, 
-  Phone, 
-  Target, 
-  TrendingUp, 
-  Users, 
-  DollarSign, 
-  Clock,
   CheckCircle, 
   ArrowRight,
   ArrowLeft,
   Send,
-  Loader2,
-  Zap
+  Loader2
 } from 'lucide-react';
 
 export default function IntelligentForm() {
@@ -44,7 +34,6 @@ export default function IntelligentForm() {
     annualRevenue: '',
     currentChallenges: [] as string[],
     repetitiveHours: '',
-    estimatedBilling: '',
     mainPain: '',
     
     // Objetivos y timeline
@@ -74,7 +63,7 @@ export default function IntelligentForm() {
       id: 'business-info',
       title: 'Información del Negocio',
       description: 'Entendamos mejor tu empresa',
-      fields: ['companySize', 'annualRevenue', 'currentChallenges', 'repetitiveHours', 'estimatedBilling', 'mainPain']
+      fields: ['companySize', 'annualRevenue', 'currentChallenges', 'repetitiveHours', 'mainPain']
     },
     {
       id: 'goals-timeline',
@@ -421,20 +410,6 @@ export default function IntelligentForm() {
           </div>
         );
 
-      case 'estimatedBilling':
-        return (
-          <div>
-            <label className="block text-white font-medium mb-2">Facturación anual aproximada:</label>
-            <input
-              type="text"
-              placeholder="Ejemplo: €100,000, €1M, €5M"
-              value={formData.estimatedBilling}
-              onChange={(e) => handleInputChange('estimatedBilling', e.target.value)}
-              className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-            />
-          </div>
-        );
-
       case 'mainPain':
         return (
           <div>
@@ -661,30 +636,6 @@ export default function IntelligentForm() {
                     {renderField(field)}
                   </div>
                 ))}
-              </div>
-            </div>
-
-            {/* Lead Score Indicator */}
-            <div className="mb-8">
-              <div className="bg-gray-800/50 rounded-lg p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-white font-medium">Lead Score</span>
-                  <span className="text-purple-400 font-bold">{leadScore}/100</span>
-                </div>
-                <div className="w-full bg-gray-700 rounded-full h-2">
-                  <motion.div
-                    className="bg-gradient-to-r from-green-500 to-purple-500 h-2 rounded-full"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${leadScore}%` }}
-                    transition={{ duration: 0.8 }}
-                  />
-                </div>
-                <div className="text-xs text-gray-400 mt-2">
-                  {leadScore >= 80 ? '🔥 Lead de alta prioridad' :
-                   leadScore >= 60 ? '⭐ Lead calificado' :
-                   leadScore >= 40 ? '📈 Lead interesado' :
-                   '🌱 Lead en desarrollo'}
-                </div>
               </div>
             </div>
 

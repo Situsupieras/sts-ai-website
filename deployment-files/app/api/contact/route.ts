@@ -55,7 +55,6 @@ export async function POST(request: NextRequest) {
       
       // Nuevo campo
       repetitiveHours: body.repetitiveHours || '',
-      estimatedBilling: body.estimatedBilling || '',
       mainPain: body.mainPain || '',
     };
 
@@ -91,7 +90,6 @@ export async function POST(request: NextRequest) {
       source: processedData.source,
       utmSource: processedData.utmSource,
       repetitiveHours: processedData.repetitiveHours,
-      estimatedBilling: processedData.estimatedBilling,
       mainPain: processedData.mainPain,
       webhook_received_at: new Date().toISOString(),
       form_source: 'sts-ai-landing-page'

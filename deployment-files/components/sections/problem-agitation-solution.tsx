@@ -186,10 +186,14 @@ export default function ProblemAgitationSolution() {
                   <li>Aumentas la satisfacción de clientes y empleados</li>
                 </ul>
               </div>
-              <div className="text-center mt-6 mb-6">
+              <div className="text-center mt-6 mb-6 flex flex-col md:flex-row gap-4 justify-center items-center">
                 <a href="#lead-form" className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200">
                   <CheckCircle className="w-5 h-5 mr-2" />
                   Calcula tu pérdida actual y descubre tu ROI potencial
+                </a>
+                <a href="/not-found" className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200">
+                  <Zap className="w-5 h-5 mr-2" />
+                  Ver Demo en Vivo
                 </a>
               </div>
             </div>

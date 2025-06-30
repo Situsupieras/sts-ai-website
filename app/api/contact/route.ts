@@ -65,7 +65,6 @@ export async function POST(request: NextRequest) {
       source: body.source || 'landing-page',
       utmSource: body.utmSource || 'direct',
       repetitiveHours: body.repetitiveHours || '',
-      estimatedBilling: body.estimatedBilling || '',
       mainPain: body.mainPain || '',
     };
 
