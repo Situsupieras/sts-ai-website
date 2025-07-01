@@ -359,4 +359,44 @@ El **Centro de Confianza** proporciona transparencia total y construye confianza
 
 **Estado**: ✅ **IMPLEMENTADO Y FUNCIONAL**  
 **Última Actualización**: Junio 2025  
-**Próxima Revisión**: Septiembre 2025 
+**Próxima Revisión**: Septiembre 2025
+
+# CENTRO DE CONFIANZA Y GUÍA INTERNA (NO SUBIR A GIT)
+
+> **ADVERTENCIA:** Este documento es solo para uso interno. **NO subir a git** ni compartir fuera del equipo. Aquí se documentan procesos, checklist de cumplimiento, y buenas prácticas para mantener la seguridad, privacidad y calidad del proyecto.
+
+---
+
+## 1. Onboarding rápido
+- Clonar el repo y ejecutar `npm install`
+- Revisar las variables de entorno (no subir llaves al repo)
+- Leer el README.md para despliegue y estructura
+
+## 2. Checklist legal y normativo
+- [x] Política de Privacidad (GDPR, ISO 27001)
+- [x] Términos de Servicio
+- [x] Política de Cookies
+- [x] Footer con enlaces legales
+- [x] Lead scoring solo interno (no exponer a usuario)
+- [x] Consentimiento explícito para cookies y contacto
+- [x] Infraestructura sobre Google Cloud
+
+## 3. Seguridad y privacidad
+- No exponer llaves, scoring ni datos internos en frontend o respuestas API
+- Revisar logs y eliminar `console.log` antes de producción
+- Revisar dependencias y vulnerabilidades con `npm audit`
+- Usar HTTPS y certificados válidos en producción
+- Revisar scripts de despliegue y no dejar credenciales hardcodeadas
+
+## 4. Despliegue seguro
+- Usar los scripts de `/deployment-files` para producción
+- Revisar variables de entorno antes de cada despliegue
+- Validar que las páginas legales estén accesibles
+- Probar el formulario y calculadora en modo producción
+
+## 5. Contacto interno
+- Equipo legal: legal@situsupieras.org
+- Equipo técnico: dev@situsupieras.org
+
+---
+**NO SUBIR ESTE DOCUMENTO NI LLAVES AL REPOSITORIO.** 

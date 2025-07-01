@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Brain, Database, Zap, Target, TrendingUp, Calculator, Play, Pause } from 'lucide-react';
+import { Brain, Database, Zap, Target, Play, Pause } from 'lucide-react';
 
 export default function AIProcessVisualizer() {
   const ref = useRef(null);
@@ -127,10 +127,10 @@ export default function AIProcessVisualizer() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Cómo Funciona Nuestro Proceso de IA
+            Nuestro Proceso de Implementación de IA
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Un journey transparente y medible desde la implementación hasta el ROI
+            Un proceso transparente y medible desde la implementación hasta el ROI del 340%
           </p>
         </motion.div>
 
@@ -219,7 +219,7 @@ export default function AIProcessVisualizer() {
               >
                 <h4 className="text-white font-semibold mb-4 text-center">{industry.industry}</h4>
                 <div className="space-y-3">
-                  {industry.cases.map((useCase, useCaseIndex) => (
+                  {industry.cases.map((useCase) => (
                     <div key={useCase.name} className="flex justify-between items-center">
                       <span className="text-gray-300 text-sm">{useCase.name}</span>
                       <span className="text-green-400 font-semibold">{useCase.impact}</span>

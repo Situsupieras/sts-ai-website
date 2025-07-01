@@ -25,19 +25,19 @@ const FeaturesSection = () => {
     {
       icon: Brain,
       title: 'Machine Learning Avanzado',
-      description: 'Algoritmos de IA de última generación que aprenden y se adaptan a tus necesidades específicas.',
+      description: 'Algoritmos de IA que aprenden de tus datos y optimizan automáticamente tus procesos.',
       color: 'from-purple-500 to-purple-600',
     },
     {
       icon: Zap,
       title: 'Automatización Inteligente',
-      description: 'Automatiza procesos complejos y tareas repetitivas con precisión y eficiencia.',
+      description: 'Elimina hasta el 70% de tareas repetitivas con automatización precisa y confiable.',
       color: 'from-yellow-500 to-yellow-600',
     },
     {
       icon: TrendingUp,
       title: 'Análisis Predictivo',
-      description: 'Anticipa tendencias y comportamientos para tomar decisiones más informadas.',
+      description: 'Anticipa tendencias y comportamientos para decisiones estratégicas basadas en datos.',
       color: 'from-green-500 to-green-600',
     },
     {
@@ -49,13 +49,13 @@ const FeaturesSection = () => {
     {
       icon: Clock,
       title: 'Implementación Rápida',
-      description: 'Despliegue en 30 días con resultados medibles desde el primer mes.',
+      description: 'Despliegue en solo 48 horas con resultados medibles desde el primer día.',
       color: 'from-red-500 to-red-600',
     },
     {
       icon: Users,
-      title: 'Soporte 24/7',
-      description: 'Equipo de expertos disponible para resolver cualquier consulta o problema.',
+      title: 'Soporte Dedicado',
+      description: 'Equipo de expertos disponible para garantizar el éxito de tu implementación.',
       color: 'from-indigo-500 to-indigo-600',
     },
     {
@@ -119,14 +119,14 @@ const FeaturesSection = () => {
             variants={itemVariants}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6"
           >
-            Características{' '}
-            <span className="gradient-text">Avanzadas</span>
+            Tecnología{' '}
+            <span className="gradient-text">de Vanguardia</span>
           </motion.h2>
           <motion.p
             variants={itemVariants}
             className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
           >
-            Nuestras soluciones de IA combinan tecnología de vanguardia con funcionalidades empresariales robustas
+            Nuestras soluciones de IA combinan las últimas tecnologías con implementación empresarial probada
           </motion.p>
         </motion.div>
 
@@ -136,7 +136,7 @@ const FeaturesSection = () => {
           animate={inView ? 'visible' : 'hidden'}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8"
         >
-          {features.map((feature, index) => (
+          {features.map((feature) => (
             <motion.div
               key={feature.title}
               variants={itemVariants}
@@ -168,11 +168,11 @@ const FeaturesSection = () => {
         >
           <div className="bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl p-8 text-white max-w-4xl mx-auto">
             <h3 className="text-2xl font-bold mb-4">
-              ¿Necesitas algo más específico?
+              ¿Listo para transformar tu empresa?
             </h3>
             <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-              Nuestras soluciones son completamente personalizables. Si tienes requisitos específicos, 
-              nuestro equipo de expertos puede desarrollar una solución a medida para tu empresa.
+              Nuestras soluciones están diseñadas para cualquier sector. Si tienes necesidades específicas, 
+              nuestro equipo desarrolla una solución personalizada con ROI garantizado.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="btn-lg bg-white text-primary-600 hover:bg-gray-100 font-semibold rounded-lg px-8 py-3 transition-colors duration-200">

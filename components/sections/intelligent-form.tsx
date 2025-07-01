@@ -8,8 +8,35 @@ import {
   ArrowRight,
   ArrowLeft,
   Send,
-  Loader2
+  Loader2,
+  AlertCircle,
+  Globe
 } from 'lucide-react';
+
+// Validación de email
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+// Validación de teléfono internacional
+const isValidPhone = (phone: string): boolean => {
+  // Eliminar espacios, guiones y paréntesis
+  const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
+  // Debe tener al menos 10 dígitos (incluyendo código de país)
+  return cleanPhone.length >= 10 && /^\+?[\d\s\-\(\)]+$/.test(phone);
+};
+
+// Validación de URL
+const isValidUrl = (url: string): boolean => {
+  if (!url) return true; // Campo opcional
+  try {
+    new URL(url.startsWith('http') ? url : `https://${url}`);
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 export default function IntelligentForm() {
   const ref = useRef(null);
@@ -18,6 +45,7 @@ export default function IntelligentForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [leadScore, setLeadScore] = useState(0);
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
 
   const [formData, setFormData] = useState({
     // Información básica
@@ -26,6 +54,7 @@ export default function IntelligentForm() {
     email: '',
     phone: '',
     company: '',
+    website: '', // Nuevo campo
     position: '',
     industry: '',
     
@@ -57,7 +86,7 @@ export default function IntelligentForm() {
       id: 'basic-info',
       title: 'Información Básica',
       description: 'Cuéntanos sobre ti y tu empresa',
-      fields: ['firstName', 'lastName', 'email', 'phone', 'company', 'position', 'industry']
+      fields: ['firstName', 'lastName', 'email', 'phone', 'company', 'website', 'position', 'industry']
     },
     {
       id: 'business-info',
@@ -151,13 +180,84 @@ export default function IntelligentForm() {
     setLeadScore(calculateLeadScore());
   }, [formData]);
 
+  // Validación del paso actual
+  const validateCurrentStep = (): boolean => {
+    const currentFields = steps[currentStep].fields;
+    const newErrors: {[key: string]: string} = {};
+
+    currentFields.forEach(field => {
+      const value = formData[field as keyof typeof formData];
+      
+      // Validaciones específicas por campo
+      switch (field) {
+        case 'firstName':
+        case 'lastName':
+        case 'company':
+          if (!value || (typeof value === 'string' && value.trim().length < 2)) {
+            newErrors[field] = 'Este campo es obligatorio y debe tener al menos 2 caracteres';
+          }
+          break;
+        
+        case 'email':
+          if (!value) {
+            newErrors[field] = 'El email es obligatorio';
+          } else if (typeof value === 'string' && !isValidEmail(value)) {
+            newErrors[field] = 'Por favor ingresa un email válido';
+          }
+          break;
+        
+        case 'phone':
+          // El teléfono es opcional, pero si se proporciona debe ser válido
+          if (value && typeof value === 'string' && !isValidPhone(value)) {
+            newErrors[field] = 'Por favor ingresa un número de teléfono válido con código de país (ej: +34, +1, +44)';
+          }
+          break;
+        
+        case 'website':
+          if (value && typeof value === 'string' && !isValidUrl(value)) {
+            newErrors[field] = 'Por favor ingresa una URL válida';
+          }
+          break;
+        
+        case 'position':
+        case 'industry':
+        case 'companySize':
+        case 'annualRevenue':
+          if (!value) {
+            newErrors[field] = 'Este campo es obligatorio';
+          }
+          break;
+      }
+    });
+
+    // Validación especial: al menos email o teléfono debe estar presente
+    if (currentStep === 0) {
+      const hasValidEmail = formData.email && isValidEmail(formData.email);
+      const hasValidPhone = formData.phone && isValidPhone(formData.phone);
+      
+      if (!hasValidEmail && !hasValidPhone) {
+        newErrors.contact = 'Debes proporcionar al menos un email válido o un número de teléfono válido';
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Limpiar error del campo cuando el usuario empiece a escribir
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
   };
 
   const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
+    if (validateCurrentStep()) {
+      if (currentStep < steps.length - 1) {
+        setCurrentStep(currentStep + 1);
+      }
     }
   };
 
@@ -168,6 +268,10 @@ export default function IntelligentForm() {
   };
 
   const handleSubmit = async () => {
+    if (!validateCurrentStep()) {
+      return;
+    }
+
     console.log('handleSubmit called');
     console.log('formData:', formData);
     console.log('leadScore:', leadScore);
@@ -223,6 +327,10 @@ export default function IntelligentForm() {
   };
 
   const renderField = (fieldName: string) => {
+    const hasError = errors[fieldName];
+    const errorClass = hasError ? 'border-red-500' : 'border-gray-600';
+    const focusClass = hasError ? 'focus:border-red-500' : 'focus:border-purple-500';
+
     switch (fieldName) {
       case 'firstName':
         return (
@@ -232,9 +340,15 @@ export default function IntelligentForm() {
               type="text"
               value={formData.firstName}
               onChange={(e) => handleInputChange('firstName', e.target.value)}
-              className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-              required
+              className={`w-full p-3 bg-gray-800 border rounded-lg text-white ${errorClass} ${focusClass} focus:outline-none`}
+              placeholder="Tu nombre"
             />
+            {hasError && (
+              <div className="flex items-center gap-2 mt-1 text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4" />
+                {hasError}
+              </div>
+            )}
           </div>
         );
 
@@ -246,9 +360,15 @@ export default function IntelligentForm() {
               type="text"
               value={formData.lastName}
               onChange={(e) => handleInputChange('lastName', e.target.value)}
-              className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-              required
+              className={`w-full p-3 bg-gray-800 border rounded-lg text-white ${errorClass} ${focusClass} focus:outline-none`}
+              placeholder="Tu apellido"
             />
+            {hasError && (
+              <div className="flex items-center gap-2 mt-1 text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4" />
+                {hasError}
+              </div>
+            )}
           </div>
         );
 
@@ -260,22 +380,36 @@ export default function IntelligentForm() {
               type="email"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
-              className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-              required
+              className={`w-full p-3 bg-gray-800 border rounded-lg text-white ${errorClass} ${focusClass} focus:outline-none`}
+              placeholder="tu@empresa.com"
             />
+            {hasError && (
+              <div className="flex items-center gap-2 mt-1 text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4" />
+                {hasError}
+              </div>
+            )}
           </div>
         );
 
       case 'phone':
         return (
           <div>
-            <label className="block text-white font-medium mb-2">Teléfono</label>
+            <label className="block text-white font-medium mb-2">Teléfono (opcional)</label>
             <input
               type="tel"
               value={formData.phone}
               onChange={(e) => handleInputChange('phone', e.target.value)}
-              className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
+              className={`w-full p-3 bg-gray-800 border rounded-lg text-white ${errorClass} ${focusClass} focus:outline-none`}
+              placeholder="+34 600 000 000"
             />
+            <p className="text-gray-400 text-sm mt-1">Incluye código de país (ej: +34, +1, +44)</p>
+            {hasError && (
+              <div className="flex items-center gap-2 mt-1 text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4" />
+                {hasError}
+              </div>
+            )}
           </div>
         );
 
@@ -287,9 +421,39 @@ export default function IntelligentForm() {
               type="text"
               value={formData.company}
               onChange={(e) => handleInputChange('company', e.target.value)}
-              className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-              required
+              className={`w-full p-3 bg-gray-800 border rounded-lg text-white ${errorClass} ${focusClass} focus:outline-none`}
+              placeholder="Nombre de tu empresa"
             />
+            {hasError && (
+              <div className="flex items-center gap-2 mt-1 text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4" />
+                {hasError}
+              </div>
+            )}
+          </div>
+        );
+
+      case 'website':
+        return (
+          <div>
+            <label className="block text-white font-medium mb-2">
+              <Globe className="w-4 h-4 inline mr-2" />
+              Sitio Web (opcional)
+            </label>
+            <input
+              type="url"
+              value={formData.website}
+              onChange={(e) => handleInputChange('website', e.target.value)}
+              className={`w-full p-3 bg-gray-800 border rounded-lg text-white ${errorClass} ${focusClass} focus:outline-none`}
+              placeholder="www.tuempresa.com"
+            />
+            <p className="text-gray-400 text-sm mt-1">Puedes incluir www. o no</p>
+            {hasError && (
+              <div className="flex items-center gap-2 mt-1 text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4" />
+                {hasError}
+              </div>
+            )}
           </div>
         );
 
@@ -300,8 +464,7 @@ export default function IntelligentForm() {
             <select
               value={formData.position}
               onChange={(e) => handleInputChange('position', e.target.value)}
-              className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-              required
+              className={`w-full p-3 bg-gray-800 border rounded-lg text-white ${errorClass} ${focusClass} focus:outline-none`}
             >
               <option value="">Selecciona tu cargo</option>
               <option value="CEO">CEO</option>
@@ -312,6 +475,12 @@ export default function IntelligentForm() {
               <option value="Manager">Manager</option>
               <option value="Otro">Otro</option>
             </select>
+            {hasError && (
+              <div className="flex items-center gap-2 mt-1 text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4" />
+                {hasError}
+              </div>
+            )}
           </div>
         );
 
@@ -322,14 +491,19 @@ export default function IntelligentForm() {
             <select
               value={formData.industry}
               onChange={(e) => handleInputChange('industry', e.target.value)}
-              className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-              required
+              className={`w-full p-3 bg-gray-800 border rounded-lg text-white ${errorClass} ${focusClass} focus:outline-none`}
             >
               <option value="">Selecciona tu industria</option>
               {industries.map(industry => (
                 <option key={industry} value={industry}>{industry}</option>
               ))}
             </select>
+            {hasError && (
+              <div className="flex items-center gap-2 mt-1 text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4" />
+                {hasError}
+              </div>
+            )}
           </div>
         );
 
@@ -340,14 +514,19 @@ export default function IntelligentForm() {
             <select
               value={formData.companySize}
               onChange={(e) => handleInputChange('companySize', e.target.value)}
-              className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-              required
+              className={`w-full p-3 bg-gray-800 border rounded-lg text-white ${errorClass} ${focusClass} focus:outline-none`}
             >
               <option value="">Selecciona el tamaño</option>
               {companySizes.map(size => (
                 <option key={size} value={size}>{size}</option>
               ))}
             </select>
+            {hasError && (
+              <div className="flex items-center gap-2 mt-1 text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4" />
+                {hasError}
+              </div>
+            )}
           </div>
         );
 
@@ -358,8 +537,7 @@ export default function IntelligentForm() {
             <select
               value={formData.annualRevenue}
               onChange={(e) => handleInputChange('annualRevenue', e.target.value)}
-              className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-              required
+              className={`w-full p-3 bg-gray-800 border rounded-lg text-white ${errorClass} ${focusClass} focus:outline-none`}
             >
               <option value="">Selecciona el rango</option>
               <option value="€100K - €1M">€100K - €1M</option>
@@ -367,6 +545,12 @@ export default function IntelligentForm() {
               <option value="€10M - €100M">€10M - €100M</option>
               <option value="€100M+">€100M+</option>
             </select>
+            {hasError && (
+              <div className="flex items-center gap-2 mt-1 text-red-400 text-sm">
+                <AlertCircle className="w-4 h-4" />
+                {hasError}
+              </div>
+            )}
           </div>
         );
 
@@ -398,34 +582,32 @@ export default function IntelligentForm() {
       case 'repetitiveHours':
         return (
           <div>
-            <label className="block text-white font-medium mb-2">Horas semanales en tareas repetitivas (aproximado):</label>
-            <input
-              type="number"
-              min="0"
-              placeholder="Ejemplo: 15, 30, 50..."
+            <label className="block text-white font-medium mb-2">Horas Semanales en Tareas Repetitivas</label>
+            <select
               value={formData.repetitiveHours}
               onChange={(e) => handleInputChange('repetitiveHours', e.target.value)}
               className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-            />
+            >
+              <option value="">Selecciona el rango</option>
+              <option value="0-5 horas">0-5 horas</option>
+              <option value="5-15 horas">5-15 horas</option>
+              <option value="15-30 horas">15-30 horas</option>
+              <option value="30+ horas">30+ horas</option>
+            </select>
           </div>
         );
 
       case 'mainPain':
         return (
           <div>
-            <label className="block text-white font-medium mb-2">¿Cuál es tu mayor dolor empresarial hoy?</label>
-            <select
+            <label className="block text-white font-medium mb-2">¿Cuál es tu mayor desafío actual?</label>
+            <textarea
               value={formData.mainPain}
               onChange={(e) => handleInputChange('mainPain', e.target.value)}
               className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-            >
-              <option value="">Selecciona una opción</option>
-              <option value="Procesos lentos o manuales">Procesos lentos o manuales</option>
-              <option value="Decisiones sin datos claros">Decisiones sin datos claros</option>
-              <option value="Costos operativos altos">Costos operativos altos</option>
-              <option value="Mala experiencia del cliente">Mala experiencia del cliente</option>
-              <option value="Otro">Otro (especificar)</option>
-            </select>
+              rows={3}
+              placeholder="Describe brevemente tu mayor desafío..."
+            />
           </div>
         );
 
@@ -437,9 +619,8 @@ export default function IntelligentForm() {
               value={formData.primaryGoal}
               onChange={(e) => handleInputChange('primaryGoal', e.target.value)}
               className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-              required
             >
-              <option value="">Selecciona tu objetivo</option>
+              <option value="">Selecciona tu objetivo principal</option>
               {goals.map(goal => (
                 <option key={goal} value={goal}>{goal}</option>
               ))}
@@ -455,7 +636,6 @@ export default function IntelligentForm() {
               value={formData.timeline}
               onChange={(e) => handleInputChange('timeline', e.target.value)}
               className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-              required
             >
               <option value="">Selecciona el timeline</option>
               {timelines.map(timeline => (
@@ -468,14 +648,13 @@ export default function IntelligentForm() {
       case 'budget':
         return (
           <div>
-            <label className="block text-white font-medium mb-2">Presupuesto Disponible *</label>
+            <label className="block text-white font-medium mb-2">Presupuesto Estimado *</label>
             <select
               value={formData.budget}
               onChange={(e) => handleInputChange('budget', e.target.value)}
               className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
-              required
             >
-              <option value="">Selecciona el presupuesto</option>
+              <option value="">Selecciona el rango de presupuesto</option>
               {budgets.map(budget => (
                 <option key={budget} value={budget}>{budget}</option>
               ))}
@@ -511,17 +690,17 @@ export default function IntelligentForm() {
       case 'teamSize':
         return (
           <div>
-            <label className="block text-white font-medium mb-2">Tamaño del Equipo de IT</label>
+            <label className="block text-white font-medium mb-2">Tamaño del Equipo de TI</label>
             <select
               value={formData.teamSize}
               onChange={(e) => handleInputChange('teamSize', e.target.value)}
               className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
             >
               <option value="">Selecciona el tamaño</option>
-              <option value="1-5 personas">1-5 personas</option>
-              <option value="6-20 personas">6-20 personas</option>
-              <option value="21-50 personas">21-50 personas</option>
-              <option value="50+ personas">50+ personas</option>
+              <option value="1-3 personas">1-3 personas</option>
+              <option value="4-10 personas">4-10 personas</option>
+              <option value="11-25 personas">11-25 personas</option>
+              <option value="25+ personas">25+ personas</option>
             </select>
           </div>
         );
@@ -548,36 +727,54 @@ export default function IntelligentForm() {
 
   if (isSubmitted) {
     return (
-      <section ref={ref} id="lead-form" className="py-20 bg-gradient-to-b from-slate-900 to-slate-800">
+      <section id="lead-form" className="py-20 bg-gradient-to-b from-slate-900 to-slate-800">
         <div className="container mx-auto px-4">
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
+            ref={ref}
+            initial={{ opacity: 0, y: 50 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="max-w-2xl mx-auto text-center"
+            className="max-w-4xl mx-auto"
           >
-            <div className="bg-gradient-to-br from-green-500/10 to-blue-500/10 rounded-2xl p-12 border border-green-500/20">
-              <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                <CheckCircle className="w-10 h-10 text-white" />
+            <div className="bg-gradient-to-br from-green-500/10 to-blue-500/10 rounded-2xl p-12 border border-green-500/20 text-center">
+              <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <CheckCircle className="w-10 h-10 text-green-400" />
               </div>
-              <h2 className="text-3xl font-bold text-white mb-4">
-                ¡Gracias por tu Interés!
-              </h2>
-              <p className="text-gray-300 mb-6">
-                Hemos recibido tu solicitud. Nuestro equipo de expertos en IA analizará tu información y te contactaremos en las próximas 24 horas con una propuesta personalizada.
+              <h2 className="text-3xl font-bold text-white mb-4">¡Gracias por tu interés!</h2>
+              <p className="text-xl text-gray-300 mb-6">
+                Hemos recibido tu información y nuestro equipo de expertos se pondrá en contacto contigo en las próximas 24 horas.
               </p>
-              <div className="bg-gray-800/50 rounded-lg p-4 mb-6">
-                <div className="text-green-400 font-semibold mb-2">Tu Lead Score: {leadScore}/100</div>
-                <div className="text-gray-400 text-sm">
-                  {leadScore >= 80 ? 'Lead de alta prioridad - Contacto inmediato' :
-                   leadScore >= 60 ? 'Lead calificado - Contacto en 24h' :
-                   leadScore >= 40 ? 'Lead interesado - Contacto en 48h' :
-                   'Lead en desarrollo - Contacto en 72h'}
+              <div className="bg-white/5 rounded-xl p-6 mb-8">
+                <h3 className="text-lg font-semibold text-white mb-4">Lo que sucederá ahora:</h3>
+                <div className="space-y-3 text-left">
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+                    <span className="text-gray-300">Análisis personalizado de tu empresa</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+                    <span className="text-gray-300">Propuesta con ROI calculado</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+                    <span className="text-gray-300">Demo personalizada de la solución</span>
+                  </div>
                 </div>
               </div>
-              <p className="text-sm text-gray-400">
-                Mientras tanto, puedes explorar nuestros casos de éxito y recursos sobre IA.
-              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all duration-300"
+                >
+                  Enviar Otro Formulario
+                </button>
+                <a
+                  href="/calculadoras"
+                  className="px-8 py-4 border-2 border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 transition-all duration-300"
+                >
+                  Probar Calculadora
+                </a>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -586,22 +783,20 @@ export default function IntelligentForm() {
   }
 
   return (
-    <section ref={ref} id="lead-form" className="py-20 bg-gradient-to-b from-slate-900 to-slate-800">
+    <section id="lead-form" className="py-20 bg-gradient-to-b from-slate-900 to-slate-800">
       <div className="container mx-auto px-4">
         <motion.div
+          ref={ref}
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           className="max-w-4xl mx-auto"
         >
           <div className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 rounded-2xl p-8 border border-purple-500/20">
-            {/* Header */}
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-white mb-4">
-                Calcula Tu ROI Personalizado
-              </h2>
+              <h2 className="text-3xl font-bold text-white mb-4">¿Listo para Transformar tu Empresa?</h2>
               <p className="text-gray-300">
-                Completa este formulario inteligente y recibe un análisis personalizado de cómo la IA puede transformar tu empresa
+                Completa este formulario inteligente y recibe un análisis personalizado con ROI garantizado del 340% en solo 24 horas
               </p>
             </div>
 
@@ -621,14 +816,22 @@ export default function IntelligentForm() {
               </div>
             </div>
 
-            {/* Step Content */}
+            {/* Current Step */}
             <div className="mb-8">
               <div className="text-center mb-6">
-                <h3 className="text-xl font-semibold text-white mb-2">
-                  {steps[currentStep].title}
-                </h3>
+                <h3 className="text-xl font-semibold text-white mb-2">{steps[currentStep].title}</h3>
                 <p className="text-gray-400">{steps[currentStep].description}</p>
               </div>
+
+              {/* Error de contacto general */}
+              {errors.contact && (
+                <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                  <div className="flex items-center gap-2 text-red-400">
+                    <AlertCircle className="w-5 h-5" />
+                    <span>{errors.contact}</span>
+                  </div>
+                </div>
+              )}
 
               <div className="grid md:grid-cols-2 gap-6">
                 {steps[currentStep].fields.map(field => (
@@ -650,19 +853,11 @@ export default function IntelligentForm() {
                 Anterior
               </button>
 
-              {currentStep < steps.length - 1 ? (
-                <button
-                  onClick={handleNext}
-                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all duration-300"
-                >
-                  Siguiente
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              ) : (
+              {currentStep === steps.length - 1 ? (
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-xl hover:from-green-700 hover:to-blue-700 transition-all duration-300 disabled:opacity-50"
+                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all duration-300 disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>
@@ -672,11 +867,40 @@ export default function IntelligentForm() {
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      Enviar Solicitud
+                      Enviar Propuesta
                     </>
                   )}
                 </button>
+              ) : (
+                <button
+                  onClick={handleNext}
+                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all duration-300"
+                >
+                  Siguiente
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               )}
+            </div>
+
+            {/* Lead Score Display */}
+            <div className="mt-8 pt-8 border-t border-gray-700">
+              <div className="text-center">
+                <div className="text-sm text-gray-400 mb-2">Puntuación de Lead</div>
+                <div className="w-full bg-gray-700 rounded-full h-3 mb-2">
+                  <motion.div
+                    className="bg-gradient-to-r from-green-500 to-blue-500 h-3 rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${leadScore}%` }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                  />
+                </div>
+                <div className="text-lg font-bold text-white">{leadScore}/100</div>
+                <div className="text-sm text-gray-400">
+                  {leadScore >= 80 ? 'Lead de alta calidad' :
+                   leadScore >= 60 ? 'Lead de calidad media' :
+                   leadScore >= 40 ? 'Lead de calidad baja' : 'Lead en desarrollo'}
+                </div>
+              </div>
             </div>
 
             {/* Trust Indicators */}

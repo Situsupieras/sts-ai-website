@@ -21,7 +21,6 @@ interface Document {
 }
 
 export function ComplianceSection() {
-  const [selectedCertification, setSelectedCertification] = useState<string | null>(null)
   const [showRequestForm, setShowRequestForm] = useState(false)
   const [requestedDocuments, setRequestedDocuments] = useState<string[]>([])
 

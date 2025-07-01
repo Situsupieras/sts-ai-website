@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 interface TrustMetric {
   id: string
@@ -22,7 +22,7 @@ interface SecurityBadge {
 }
 
 export function TrustIndicators() {
-  const [metrics, setMetrics] = useState<TrustMetric[]>([
+  const [metrics] = useState<TrustMetric[]>([
     {
       id: 'uptime',
       name: 'Uptime',
@@ -61,7 +61,7 @@ export function TrustIndicators() {
     }
   ])
 
-  const [badges, setBadges] = useState<SecurityBadge[]>([
+  const [badges] = useState<SecurityBadge[]>([
     {
       id: 'soc2',
       name: 'SOC 2 Type II',

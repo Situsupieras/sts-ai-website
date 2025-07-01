@@ -314,3 +314,54 @@ A partir de junio 2024, la sección de Social Proof y métricas del sitio web ya
 ## ⚠️ NOTA DE SEGURIDAD
 
 El archivo `comandos-servidor.txt` contiene instrucciones y accesos internos para administración y nunca debe subirse al repositorio remoto ni compartirse públicamente. 
+
+# Si Tu Supieras - Landing Page IA Empresarial
+
+## Descripción
+Landing page moderna y segura para generación de leads calificados en proyectos de inteligencia artificial, automatización y analítica avanzada. Cumple con GDPR, ISO 27001 y mejores prácticas de Silicon Valley.
+
+## Características principales
+- **Cumplimiento normativo**: GDPR, ISO 27001, Google Cloud, mejores prácticas de desarrollo seguro.
+- **Páginas legales**: Política de Privacidad, Términos de Servicio, Política de Cookies.
+- **Calculadora de ROI**: Herramienta interactiva con validaciones, tooltips y reporte descargable.
+- **Formulario inteligente**: Validación avanzada, sin exponer datos internos, lead scoring solo interno.
+- **Sección de confianza**: Empresas visionarias, certificaciones y procesos alineados a la normativa europea.
+- **UI/UX de clase mundial**: Diseño intuitivo, responsivo y accesible.
+
+## Estructura del proyecto
+- `/app` - Páginas y rutas API (Next.js 14)
+- `/components` - Componentes reutilizables (formularios, secciones, layout)
+- `/public` - Assets estáticos y manifiesto web
+- `/deployment-files` - Archivos y scripts para despliegue
+
+## Instalación y desarrollo
+```bash
+npm install
+npm run dev
+```
+
+## Despliegue producción
+```bash
+npm run build
+npm start
+```
+
+## Variables de entorno
+- `WEBHOOK_URL` (opcional): URL del webhook para leads
+
+## Enlaces legales
+- [Política de Privacidad](/privacidad)
+- [Términos de Servicio](/terminos)
+- [Política de Cookies](/cookies)
+
+## Seguridad y privacidad
+- No se exponen datos internos de scoring ni llaves en el frontend
+- Cumplimiento estricto de GDPR e ISO 27001
+- Infraestructura sobre Google Cloud
+
+## Contacto
+- Email: info@situsupieras.org
+- Teléfono: por el momento sin teléfono
+
+---
+*No incluir llaves, credenciales ni datos sensibles en el repositorio ni en la documentación.* 

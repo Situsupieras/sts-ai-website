@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Calculator, 
@@ -9,16 +9,13 @@ import {
   Mail, 
   CheckCircle, 
   AlertCircle,
-  Building,
   Factory,
   ShoppingCart,
   Truck,
   Heart,
   GraduationCap,
-  DollarSign,
-  Clock,
   Users,
-  BarChart3
+  HelpCircle
 } from 'lucide-react';
 
 // Tipos de datos
@@ -352,6 +349,17 @@ export default function ROICalculator() {
 
   const selectedIndustryData = industries.find(ind => ind.id === selectedIndustry);
 
+  // Función para obtener el tooltip de cada campo
+  const getFieldTooltip = (fieldId: string): string => {
+    const tooltips: Record<string, string> = {
+      'customerSatisfaction': 'Porcentaje actual de satisfacción de tus clientes (0-100%). Un valor más alto indica mayor satisfacción.',
+      'inventoryTurnover': 'Número de veces que vendes y reemplazas tu inventario en un año. Un valor más alto indica mejor gestión.',
+      'staffEfficiency': 'Nivel actual de eficiencia de tu personal. Considera factores como productividad, tiempo de respuesta y calidad del trabajo.',
+      'monthlySales': 'Ventas totales mensuales de tu empresa en la moneda local.'
+    };
+    return tooltips[fieldId] || '';
+  };
+
   // Validación en tiempo real
   const validateField = (fieldId: string, value: any): string | null => {
     const field = selectedIndustryData?.fields.find(f => f.id === fieldId);
@@ -501,10 +509,10 @@ export default function ROICalculator() {
               <Calculator className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Calculadora de ROI de IA
+              Calcula tu ROI Potencial
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Descubre el potencial retorno de inversión de implementar soluciones de IA en tu industria. 
+              Descubre el potencial retorno de inversión de implementar soluciones de IA en tu empresa. 
               Nuestras calculadoras especializadas te ayudarán a tomar decisiones informadas.
             </p>
           </motion.div>
@@ -584,9 +592,18 @@ export default function ROICalculator() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {selectedIndustryData.fields.map((field) => (
                   <div key={field.id} className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-gray-700 flex items-center">
                       {field.label}
                       {field.required && <span className="text-red-500 ml-1">*</span>}
+                      {getFieldTooltip(field.id) && (
+                        <div className="relative group ml-2">
+                          <HelpCircle className="w-4 h-4 text-gray-400 cursor-help" />
+                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-10 max-w-xs">
+                            {getFieldTooltip(field.id)}
+                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                          </div>
+                        </div>
+                      )}
                     </label>
                     
                     {field.type === 'select' ? (

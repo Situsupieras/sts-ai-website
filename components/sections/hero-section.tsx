@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Play, TrendingUp, Users, Zap } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
 
 export default function HeroSection() {
   return (
@@ -29,9 +29,9 @@ export default function HeroSection() {
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Transformamos empresas con soluciones de IA que generan 
+              Soluciones de IA empresarial que generan 
               <span className="text-purple-400 font-semibold"> ROI comprobado del 340%</span> 
-              en los primeros 6 meses
+              en solo 6 meses. Sin referencias falsas, solo resultados reales.
             </p>
           </motion.div>
 
@@ -44,19 +44,19 @@ export default function HeroSection() {
           >
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-purple-400 mb-2">340%</div>
-              <div className="text-gray-400 text-sm">ROI Promedio</div>
+              <div className="text-gray-400 text-sm">ROI Comprobado</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-blue-400 mb-2">€2.4M</div>
-              <div className="text-gray-400 text-sm">Ahorro Promedio</div>
+              <div className="text-3xl md:text-4xl font-bold text-blue-400 mb-2">€2M</div>
+              <div className="text-gray-400 text-sm">Ahorro Anual</div>
             </div>
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-pink-400 mb-2">48h</div>
               <div className="text-gray-400 text-sm">Implementación</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-green-400 mb-2">500+</div>
-              <div className="text-gray-400 text-sm">Empresas Atendidas</div>
+              <div className="text-3xl md:text-4xl font-bold text-green-400 mb-2">100%</div>
+              <div className="text-gray-400 text-sm">Satisfacción</div>
             </div>
           </motion.div>
 

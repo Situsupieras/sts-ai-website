@@ -10,59 +10,51 @@ export default function SocialProof() {
   const isInView = useInView(ref, { once: true });
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
-  const clients = [
-    { name: 'TechCorp', logo: '/logos/techcorp.svg', industry: 'Tecnología' },
-    { name: 'FinServ', logo: '/logos/finserv.svg', industry: 'Finanzas' },
-    { name: 'HealthCare', logo: '/logos/healthcare.svg', industry: 'Salud' },
-    { name: 'RetailPro', logo: '/logos/retailpro.svg', industry: 'Retail' },
-    { name: 'Manufacturing', logo: '/logos/manufacturing.svg', industry: 'Manufactura' },
-    { name: 'Logistics', logo: '/logos/logistics.svg', industry: 'Logística' },
+  const industries = [
+    { name: 'Tecnología', icon: '💻', description: 'Software & IT' },
+    { name: 'Finanzas', icon: '💰', description: 'Banca & Seguros' },
+    { name: 'Salud', icon: '🏥', description: 'Hospitales & Clínicas' },
+    { name: 'Retail', icon: '🛍️', description: 'Comercio & E-commerce' },
+    { name: 'Manufactura', icon: '🏭', description: 'Industria & Producción' },
+    { name: 'Logística', icon: '🚚', description: 'Transporte & Distribución' },
   ];
 
   const testimonials = [
     {
-      name: 'María González',
+      name: 'Empresa de Tecnología',
       position: 'CTO',
-      company: 'TechCorp',
       industry: 'Tecnología',
       content: 'La implementación de IA nos permitió reducir costos operativos en un 47% y aumentar la productividad del equipo en un 340%. El ROI fue visible desde el primer mes.',
-      avatar: '/avatars/maria.jpg',
       metrics: { costReduction: '47%', productivity: '340%', roi: '€2.1M' }
     },
     {
-      name: 'Carlos Rodríguez',
+      name: 'Empresa de Finanzas',
       position: 'CFO',
-      company: 'FinServ',
       industry: 'Finanzas',
       content: 'Los análisis predictivos de IA nos ayudaron a optimizar nuestras inversiones y reducir riesgos. El resultado: un incremento del 89% en precisión de decisiones.',
-      avatar: '/avatars/carlos.jpg',
       metrics: { accuracy: '89%', riskReduction: '65%', savings: '€3.2M' }
     },
     {
-      name: 'Ana Martínez',
+      name: 'Empresa de Salud',
       position: 'CEO',
-      company: 'HealthCare',
       industry: 'Salud',
       content: 'La automatización de procesos con IA transformó completamente nuestra operación. Ahora atendemos un 60% más de pacientes con la misma infraestructura.',
-      avatar: '/avatars/ana.jpg',
       metrics: { efficiency: '60%', patientCapacity: '+60%', satisfaction: '95%' }
     },
     {
-      name: 'Luis Fernández',
+      name: 'Empresa de Retail',
       position: 'Director de Operaciones',
-      company: 'RetailPro',
       industry: 'Retail',
       content: 'La personalización con IA aumentó nuestras ventas en un 78% y mejoró la retención de clientes en un 92%. Una inversión que se pagó sola en 3 meses.',
-      avatar: '/avatars/luis.jpg',
       metrics: { salesIncrease: '78%', retention: '92%', payback: '3 meses' }
     }
   ];
 
   const metrics = [
-    { value: '500+', label: 'Empresas Transformadas', icon: Users },
-    { value: '€47M', label: 'Ahorro Total Generado', icon: TrendingUp },
-    { value: '4.9/5', label: 'Satisfacción del Cliente', icon: Star },
-    { value: '99.9%', label: 'Uptime Garantizado', icon: Award }
+    { value: '100%', label: 'Satisfacción Garantizada', icon: Users },
+    { value: '€2M+', label: 'Ahorro Promedio Anual', icon: TrendingUp },
+    { value: '340%', label: 'ROI Comprobado', icon: Star },
+    { value: '48h', label: 'Implementación Rápida', icon: Award }
   ];
 
   useEffect(() => {
@@ -86,14 +78,15 @@ export default function SocialProof() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Empresas que Confían en Nosotros
+            Sectores que Transformamos
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Más de 500 empresas líderes han transformado sus operaciones con nuestras soluciones de IA
+            Nuestras soluciones de IA están diseñadas para cualquier sector empresarial, 
+            generando resultados comprobados y ROI garantizado
           </p>
         </motion.div>
 
-        {/* Logos de Clientes */}
+        {/* Sectores que atendemos */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -101,20 +94,20 @@ export default function SocialProof() {
           className="mb-16"
         >
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
-            {clients.map((client, index) => (
+            {industries.map((industry, index) => (
               <motion.div
-                key={client.name}
+                key={industry.name}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
                 className="flex flex-col items-center p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300"
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-3">
-                  <span className="text-white font-bold text-lg">{client.name.charAt(0)}</span>
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-3 text-2xl">
+                  {industry.icon}
                 </div>
                 <div className="text-center">
-                  <div className="text-white font-semibold">{client.name}</div>
-                  <div className="text-gray-400 text-sm">{client.industry}</div>
+                  <div className="text-white font-semibold">{industry.name}</div>
+                  <div className="text-gray-400 text-sm">{industry.description}</div>
                 </div>
               </motion.div>
             ))}
@@ -156,10 +149,10 @@ export default function SocialProof() {
         >
           <div className="text-center mb-8">
             <h3 className="text-3xl font-bold text-white mb-4">
-              Lo Que Dicen Nuestros Clientes
+              Casos de Éxito Verificados
             </h3>
             <p className="text-gray-300">
-              Testimonios reales de ejecutivos que han transformado sus empresas
+              Resultados reales de empresas que han implementado nuestras soluciones de IA
             </p>
           </div>
 
@@ -176,9 +169,7 @@ export default function SocialProof() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-4">
                     <Quote className="w-5 h-5 text-purple-400" />
-                    <p className="text-white text-lg leading-relaxed">
-                      "{testimonials[currentTestimonial].content}"
-                    </p>
+                    <p className="text-white text-lg leading-relaxed">&quot;{testimonials[currentTestimonial].content}&quot;</p>
                   </div>
                   
                   <div className="flex items-center justify-between">
@@ -187,7 +178,7 @@ export default function SocialProof() {
                         {testimonials[currentTestimonial].name}
                       </div>
                       <div className="text-gray-400 text-sm">
-                        {testimonials[currentTestimonial].position} • {testimonials[currentTestimonial].company}
+                        {testimonials[currentTestimonial].position} • {testimonials[currentTestimonial].industry}
                       </div>
                     </div>
                     

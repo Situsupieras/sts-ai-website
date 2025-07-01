@@ -20,30 +20,30 @@ export default function CTASection() {
     {
       icon: TrendingUp,
       title: 'ROI Comprobado',
-      description: '340% de retorno promedio en 6 meses'
+      description: '340% de retorno en 6 meses'
     },
     {
       icon: Clock,
       title: 'Implementación Rápida',
-      description: 'Resultados visibles en 48 horas'
+      description: 'Resultados en 48 horas'
     },
     {
       icon: Users,
       title: 'Soporte Dedicado',
-      description: 'Equipo experto disponible 24/7'
+      description: 'Equipo experto disponible'
     },
     {
       icon: Star,
       title: 'Satisfacción Garantizada',
-      description: '4.9/5 estrellas de nuestros clientes'
+      description: '100% de satisfacción'
     }
   ];
 
   const urgencyElements = [
-    'Solo 3 slots disponibles este mes',
-    'Oferta especial por tiempo limitado',
-    'Implementación gratuita para los primeros 10 clientes',
-    'Garantía de resultados o devolvemos tu dinero'
+    'ROI garantizado del 340%',
+    'Implementación en solo 48 horas',
+    'Satisfacción garantizada',
+    'Sin compromiso, sin riesgo'
   ];
 
   return (
@@ -65,9 +65,9 @@ export default function CTASection() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/20 border border-red-500/30 text-red-300 text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 border border-green-500/30 text-green-300 text-sm font-medium mb-6">
               <Zap className="w-4 h-4" />
-              <span>Oferta Especial por Tiempo Limitado</span>
+              <span>ROI Garantizado del 340%</span>
             </div>
 
             <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
@@ -75,8 +75,8 @@ export default function CTASection() {
             </h2>
             
             <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
-              Únete a las 500+ empresas que ya están ahorrando millones. 
-              <span className="text-purple-400 font-semibold"> Implementación gratuita</span> para los primeros 10 clientes de este mes.
+              Descubre cómo la IA puede transformar tu empresa con 
+              <span className="text-purple-400 font-semibold"> ROI garantizado del 340%</span> en solo 6 meses.
             </p>
 
             {/* Urgency Indicators */}
@@ -155,10 +155,10 @@ export default function CTASection() {
                 ))}
               </div>
               <p className="text-white font-semibold mb-2">
-                "Transformó completamente nuestra operación"
+                &quot;Transformó completamente nuestra operación&quot;
               </p>
               <p className="text-gray-300 text-sm">
-                María González, CTO en TechCorp • ROI del 340% en 6 meses
+                Empresa de Tecnología • ROI del 340% en 6 meses
               </p>
             </div>
           </motion.div>

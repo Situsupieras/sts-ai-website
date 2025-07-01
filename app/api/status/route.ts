@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server'
-import fs from 'fs'
-import path from 'path'
 
 // Función para obtener métricas del sistema
 async function getSystemMetrics() {
@@ -15,17 +13,15 @@ async function getSystemMetrics() {
     const memoryUsage = Math.round((memInfo.heapUsed / memInfo.heapTotal) * 100)
 
     // Simular uptime (en producción esto vendría de un servicio de monitoreo)
-    const uptime = process.uptime()
     const uptimePercentage = 99.9 + (Math.random() * 0.1) // 99.9% - 100%
 
     return {
       uptime: Math.round(uptimePercentage * 100) / 100,
-      latency: latency,
-      memoryUsage: memoryUsage,
+      latency,
+      memoryUsage,
       timestamp: new Date().toISOString()
     }
-  } catch (error) {
-    console.error('Error getting system metrics:', error)
+  } catch {
     return {
       uptime: 99.5,
       latency: 100,
@@ -46,7 +42,7 @@ function getCertificationData() {
         description: 'Certificación de controles de seguridad',
         issuer: 'AICPA',
         validUntil: '2025-12-30',
-        progress: 75,
+        progress: 75, 
         lastUpdated: '2025-01-15'
       },
       {
@@ -105,8 +101,7 @@ export async function GET() {
     }
 
     return NextResponse.json(response)
-  } catch (error) {
-    console.error('Error in status API:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Error getting status data' },
       { status: 500 }

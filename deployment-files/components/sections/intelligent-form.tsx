@@ -566,15 +566,6 @@ export default function IntelligentForm() {
               <p className="text-gray-300 mb-6">
                 Hemos recibido tu solicitud. Nuestro equipo de expertos en IA analizará tu información y te contactaremos en las próximas 24 horas con una propuesta personalizada.
               </p>
-              <div className="bg-gray-800/50 rounded-lg p-4 mb-6">
-                <div className="text-green-400 font-semibold mb-2">Tu Lead Score: {leadScore}/100</div>
-                <div className="text-gray-400 text-sm">
-                  {leadScore >= 80 ? 'Lead de alta prioridad - Contacto inmediato' :
-                   leadScore >= 60 ? 'Lead calificado - Contacto en 24h' :
-                   leadScore >= 40 ? 'Lead interesado - Contacto en 48h' :
-                   'Lead en desarrollo - Contacto en 72h'}
-                </div>
-              </div>
               <p className="text-sm text-gray-400">
                 Mientras tanto, puedes explorar nuestros casos de éxito y recursos sobre IA.
               </p>

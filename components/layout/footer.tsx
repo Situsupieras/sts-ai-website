@@ -46,11 +46,10 @@ export default function Footer() {
   ];
 
   const certifications = [
-    { name: 'ISO 27001', description: 'Seguridad de la Información' },
-    { name: 'GDPR Compliance', description: 'Protección de Datos' },
-    { name: 'Microsoft Partner', description: 'Partner Oficial' },
-    { name: 'AWS Partner', description: 'Partner Certificado' },
-    { name: 'Google Cloud Partner', description: 'Partner Autorizado' }
+    { name: '🔐 Seguridad basada en ISO 27001', description: 'En proceso de certificación' },
+    { name: '📁 Procesos alineados con GDPR', description: 'Cumplimiento europeo' },
+    { name: '☁️ Infraestructura sobre Google Cloud', description: 'Seguridad empresarial' },
+    { name: '⚙️ Mejores prácticas de desarrollo seguro', description: 'En proceso de certificación ISO y alianzas oficiales' }
   ];
 
   return (
@@ -81,7 +80,7 @@ export default function Footer() {
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="w-4 h-4 text-purple-400" />
-                  <span className="text-gray-300">+34 600 000 000</span>
+                  <span className="text-gray-300">por el momento sin teléfono</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <MapPin className="w-4 h-4 text-purple-400" />
@@ -116,7 +115,7 @@ export default function Footer() {
             >
               <h4 className="text-lg font-semibold mb-4">Enlaces Rápidos</h4>
               <ul className="space-y-2">
-                {quickLinks.map((link, index) => (
+                {quickLinks.map((link) => (
                   <li key={link.name}>
                     <a 
                       href={link.href}
@@ -140,7 +139,7 @@ export default function Footer() {
             >
               <h4 className="text-lg font-semibold mb-4">Servicios</h4>
               <ul className="space-y-2">
-                {services.map((service, index) => (
+                {services.map((service) => (
                   <li key={service.name}>
                     <a 
                       href={service.href}
@@ -164,7 +163,7 @@ export default function Footer() {
             >
               <h4 className="text-lg font-semibold mb-4">Recursos</h4>
               <ul className="space-y-2 mb-6">
-                {resources.map((resource, index) => (
+                {resources.map((resource) => (
                   <li key={resource.name}>
                     <a 
                       href={resource.href}
@@ -179,7 +178,7 @@ export default function Footer() {
 
               <h4 className="text-lg font-semibold mb-4">Certificaciones</h4>
               <div className="space-y-2">
-                {certifications.map((cert, index) => (
+                {certifications.map((cert) => (
                   <div key={cert.name} className="flex items-center gap-2">
                     <Award className="w-4 h-4 text-green-400" />
                     <div>

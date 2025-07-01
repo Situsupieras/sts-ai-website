@@ -157,16 +157,18 @@ export async function POST(request: NextRequest) {
     const webhookData = await webhookResponse.text();
     console.log('Webhook response data:', webhookData);
 
-    // Respuesta exitosa
+    // Respuesta exitosa - SIN EXPONER DATOS INTERNOS
     const response = {
       success: true,
       message: isROICalculator 
         ? '¡Gracias por usar nuestra calculadora! Tu reporte ha sido enviado y te contactaremos pronto.'
         : '¡Gracias por tu interés! Te contactaremos pronto.',
-      data: processedData,
-      leadScore: processedData.leadScore,
-      priority: processedData.leadScore >= 80 ? 'alta' : 
-                processedData.leadScore >= 60 ? 'media' : 'baja',
+      data: {
+        name: processedData.name,
+        email: processedData.email,
+        submittedAt: processedData.submittedAt,
+        source: processedData.source
+      },
       webhook_sent: true,
       webhook_status: webhookResponse.status,
       isROICalculator

@@ -147,14 +147,14 @@ export default function CalculatorStats() {
               variants={itemVariants}
               className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
             >
-              Impacto de Nuestras Calculadoras
+              Resultados Comprobados en Empresas Reales
             </motion.h2>
             <motion.p 
               variants={itemVariants}
               className="text-xl text-gray-600 max-w-3xl mx-auto"
             >
-              Miles de empresas ya han descubierto el potencial de la IA con nuestras 
-              herramientas especializadas. Estos son los números que hablan por sí solos.
+              Nuestras soluciones de IA han transformado cientos de empresas. 
+              Estos son los resultados medibles que generamos para nuestros clientes.
             </motion.p>
           </div>
 
@@ -194,56 +194,48 @@ export default function CalculatorStats() {
             ))}
           </div>
 
-          {/* Testimonials Section */}
+          {/* Empresas Visionarias Section */}
           <motion.div
             variants={itemVariants}
             className="mt-16 bg-white rounded-2xl p-8 shadow-lg"
           >
             <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-              Lo que dicen nuestros usuarios
+              Empresas que se están preparando para el futuro
             </h3>
             
+            <p className="text-lg text-gray-600 text-center mb-8 max-w-4xl mx-auto">
+              Estamos ayudando a empresas visionarias a comenzar su transformación con inteligencia artificial, automatización y datos en tiempo real.
+            </p>
+            
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
+              <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <TrendingUp className="w-8 h-8 text-blue-600" />
                 </div>
-                <p className="text-gray-600 mb-4">
-                  "La calculadora de ROI nos ayudó a justificar la inversión en IA. 
-                  El resultado fue exactamente lo que esperábamos."
+                <h4 className="font-semibold text-gray-900 mb-2">Empresas en Transformación</h4>
+                <p className="text-gray-600 text-sm">
+                  Compañías que están adoptando IA para mantenerse competitivas en el mercado digital
                 </p>
-                <div className="font-semibold text-gray-900">María González</div>
-                <div className="text-sm text-gray-500">Directora de Operaciones, TechCorp</div>
               </div>
               
-              <div className="text-center">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
+              <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="w-8 h-8 text-green-600" />
                 </div>
-                <p className="text-gray-600 mb-4">
-                  "Excelente herramienta para evaluar el impacto de la IA en nuestro 
-                  sector manufacturero. Muy precisa y fácil de usar."
+                <h4 className="font-semibold text-gray-900 mb-2">Líderes Visionarios</h4>
+                <p className="text-gray-600 text-sm">
+                  Directivos que entienden el potencial de la IA para revolucionar sus operaciones
                 </p>
-                <div className="font-semibold text-gray-900">Carlos Rodríguez</div>
-                <div className="text-sm text-gray-500">CEO, ManufacturaPro</div>
               </div>
               
-              <div className="text-center">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
+              <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Star className="w-8 h-8 text-purple-600" />
                 </div>
-                <p className="text-gray-600 mb-4">
-                  "El reporte personalizado nos dio insights valiosos para nuestra 
-                  estrategia de transformación digital."
+                <h4 className="font-semibold text-gray-900 mb-2">Innovadores del Sector</h4>
+                <p className="text-gray-600 text-sm">
+                  Organizaciones que están marcando el camino hacia el futuro de la automatización
                 </p>
-                <div className="font-semibold text-gray-900">Ana Martínez</div>
-                <div className="text-sm text-gray-500">CTO, RetailInnovation</div>
               </div>
             </div>
           </motion.div>
